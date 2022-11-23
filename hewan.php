@@ -12,6 +12,18 @@ if($_SESSION['status']!="login"){
 
 <h4>Selamat Datang, <?php echo $_SESSION['username'];?>! Anda Telah Login.</h4>
     <h1>Pemeriksaan Hewan Di RS Sumber Waras</h1>
+    <form action="hewan.php" method="get">
+        <label> cari:</label>
+        <input type="text" name="cari">
+        <nput type="submit" value="cari">
+</form>
+
+<?php
+if(isset($_GET['cari'])){
+    echo"<b>Hasil Pencarian:" $cari "</b>";
+}
+?>
+
     <h4><a href="logout.php">LOGOUT</a>
 </h4>
     <table border="1">
@@ -23,8 +35,16 @@ if($_SESSION['status']!="login"){
         </tr>
 <?php
 include("koneksi.php");
-$sql='SELECT * FROM tb_pemeriksaan';
-$query=mysqli_query($koneksi,$sql);
+if(isset($_GET['cari'])){
+    $cari=$_GET['cari'];
+    $sql="SELECT * FROM tb_pemeriksaan WHERE nama LIKE '%".$cari."%'";
+    $query=mysqli_query($koneksi, $sql);
+}else{
+    $sql= 'SELECT * FROM tb_pemeriksaan';
+    $query=mysqli_query($koneksi,$sql);
+}
+
+
 while($db_pemeriksaanhewan=mysqli_fetch_array($query)){
     echo"<tr>";
     echo"<td>".$db_pemeriksaanhewan['id']."</td>";
